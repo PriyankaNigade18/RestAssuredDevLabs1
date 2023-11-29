@@ -29,7 +29,7 @@ public class PostRequest
 	
 	
 	
-  @Test
+ // @Test
   public void post_UsingMap()
   {
 	  //data- payload
@@ -55,4 +55,82 @@ public class PostRequest
 	  
 	  
   }
+  
+  //@Test
+  public void students_Hash()
+  {
+	  //payload
+	  HashMap<String,Object> data=new HashMap<String,Object>();
+	  data.put("name","Jay");
+	  data.put("location","India");
+	  data.put("phone","121233");
+	  String arr[]={"python","C#"};
+	  data.put("courses",arr);
+	  
+	  given()
+	  	.contentType("application/json")
+	  	.body(data)
+	  	
+	  .when()
+	  	.post("http://localhost:3000/students")
+	  
+	  .then()
+	  	.statusCode(201)
+	  	.body("name",equalTo("Jay"))
+	  	.body("location",equalTo("India"))
+	  	.body("phone",equalTo("121233"))
+	  	.body("courses[0]", equalTo("python"))
+	  	.body("courses[1]",equalTo("C#"))
+	  	.log().all();
+	    
+	   
+  }
+  
+  
+  //@Test
+  public void studentPost()
+  {
+	  
+	  //payload
+	  StudentPOJO pojo=new StudentPOJO();
+	  pojo.setName("Sam");
+	  pojo.setLocation("Us");
+	  pojo.setPhone("464678");
+	  String arr[]= {"C","PHP"};
+	  pojo.setCourses(arr);
+	  
+	    
+	  given()
+	  	.contentType("application/json")
+	  	.body(pojo)
+	  	
+	  .when()
+	  	.post("http://localhost:3000/students")
+	  
+	  .then()
+	  	.statusCode(201)
+	  	.body("name",equalTo("Sam"))
+	  	.body("location",equalTo("Us"))
+	  	.body("phone",equalTo("464678"))
+	  	.body("courses[0]",equalTo("C"))
+	  	.body("courses[1]",equalTo("PHP"))
+	  	.log().all();
+	    
+	   
+  }
+  
+  @Test
+  public void deletePojo() {
+	  
+	  given()
+	  
+	  .when()
+	  	.delete("http://localhost:3000/students/4")
+	  	
+	  	.then()
+	  		.statusCode(200).log().all();
+	  System.out.println("Student id=4 record is deleted!");
+  }
+  
+  
 }
